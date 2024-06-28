@@ -2,6 +2,7 @@ package com.iaura.controller;
 
 import com.iaura.entity.Expense;
 import com.iaura.entity.User;
+import com.iaura.repository.ExpenseRepository;
 import com.iaura.repository.UserRepository;
 import com.iaura.service.ExpenseService;
 import com.iaura.service.UserService;
@@ -28,6 +29,10 @@ public class ExpenseController {
     private UserRepository userRepository;
 
 
+    @Autowired
+    private ExpenseRepository repository;
+
+
     @PostMapping("/save")
     public ResponseEntity<String> saveExpense(@RequestBody Expense expense) {
         expenseService.saveExpense(expense);
@@ -39,5 +44,17 @@ public class ExpenseController {
         User user = userRepository.findById(id).get();
         List<Expense> list = user.getExpenses();
         return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteExpense(@PathVariable("id") Long id) {
+        expenseService.DeleteExpense(id);
+        return new ResponseEntity<>("deleted",HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateExpense(@RequestBody Expense expense,@PathVariable("id") Long id) {
+        expenseService.updateExpense(expense,id);
+        return new ResponseEntity<>("updated",HttpStatus.OK);
     }
 }

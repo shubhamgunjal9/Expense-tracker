@@ -32,11 +32,12 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public void updateExpense(Expense expense, Long id) {
-
+        expense.setId(id);
+        repository.save(expense);
     }
 
     @Override
     public void DeleteExpense(Long id) {
-
+        repository.delete(repository.findById(id).get());
     }
 }
